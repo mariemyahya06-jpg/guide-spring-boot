@@ -286,37 +286,41 @@ public class DataInitializer {
                 + "en appliquant la methode vue en cours.");
         StringBuilder sb = new StringBuilder();
 
-        if ("EXERCICES".equals(type)) {
-            // ---------- TD / Exercices ----------
-            sb.append("Objectif du TD :\n");
-            sb.append("S'entrainer sur ").append(theme).append(".\n\n");
-            sb.append("Notions essentielles :\n");
-            for (String n : notions) sb.append("- ").append(n).append("\n");
-            sb.append("\nExercice :\n").append(exercice).append("\n");
-            sb.append("\nConseils rapides :\n");
-            sb.append("- Cherchez d'abord seul avant de regarder la correction.\n");
-            sb.append("- Verifiez chaque etape de votre raisonnement.");
-        } else if ("VIDEO".equals(type)) {
-            // ---------- Video ----------
-            sb.append("Ce que vous allez apprendre :\n");
-            sb.append("Apres cette video, vous comprendrez ").append(theme).append(".\n\n");
-            sb.append("Points abordes dans la video :\n");
-            for (String n : notions) sb.append("- ").append(n).append("\n");
-            sb.append("\nActivite apres la video :\n");
-            sb.append("Resumez en quelques phrases ce que vous avez retenu sur ").append(module)
-              .append(", puis essayez d'expliquer une notion a un camarade.\n");
-            sb.append("\nConseils rapides :\n");
-            sb.append("- Prenez des notes pendant la video.\n");
-            sb.append("- Mettez la video en pause pour refaire les exemples.");
-        } else {
-            // ---------- Cours (PDF) : mini-lecon ----------
-            sb.append("Resume du cours :\n").append(resume).append("\n\n");
-            sb.append("Notions essentielles :\n");
-            for (String n : notions) sb.append("- ").append(n).append("\n");
-            if (exemple != null) sb.append("\nExemple :\n").append(exemple).append("\n");
-            sb.append("\nConseils rapides :\n");
-            sb.append("- Reliez chaque notion a un exemple concret.\n");
-            sb.append("- Resumez le cours avec vos propres mots, puis testez-vous.");
+        switch (type) {
+            case "EXERCICES":
+                // ---------- TD / Exercices ----------
+                sb.append("Objectif du TD :\n");
+                sb.append("S'entrainer sur ").append(theme).append(".\n\n");
+                sb.append("Notions essentielles :\n");
+                for (String n : notions) sb.append("- ").append(n).append("\n");
+                sb.append("\nExercice :\n").append(exercice).append("\n");
+                sb.append("\nConseils rapides :\n");
+                sb.append("- Cherchez d'abord seul avant de regarder la correction.\n");
+                sb.append("- Verifiez chaque etape de votre raisonnement.");
+                break;
+            case "VIDEO":
+                // ---------- Video ----------
+                sb.append("Ce que vous allez apprendre :\n");
+                sb.append("Apres cette video, vous comprendrez ").append(theme).append(".\n\n");
+                sb.append("Points abordes dans la video :\n");
+                for (String n : notions) sb.append("- ").append(n).append("\n");
+                sb.append("\nActivite apres la video :\n");
+                sb.append("Resumez en quelques phrases ce que vous avez retenu sur ").append(module)
+                  .append(", puis essayez d'expliquer une notion a un camarade.\n");
+                sb.append("\nConseils rapides :\n");
+                sb.append("- Prenez des notes pendant la video.\n");
+                sb.append("- Mettez la video en pause pour refaire les exemples.");
+                break;
+            default:
+                // ---------- Cours (PDF) : mini-lecon ----------
+                sb.append("Resume du cours :\n").append(resume).append("\n\n");
+                sb.append("Notions essentielles :\n");
+                for (String n : notions) sb.append("- ").append(n).append("\n");
+                if (exemple != null) sb.append("\nExemple :\n").append(exemple).append("\n");
+                sb.append("\nConseils rapides :\n");
+                sb.append("- Reliez chaque notion a un exemple concret.\n");
+                sb.append("- Resumez le cours avec vos propres mots, puis testez-vous.");
+                break;
         }
         return sb.toString();
     }
