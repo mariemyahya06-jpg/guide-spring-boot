@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html lang="fr" xmlns:th="http://www.thymeleaf.org">
+<head th:replace="~{fragments/layout :: head('Admin')}"></head>
+<body>
+<div th:replace="~{fragments/layout :: navbar}"></div>
+<div class="container">
+    <div class="breadcrumb"><a th:href="@{/dashboard}">Accueil</a> / Tableau de bord</div>
+    <div th:replace="~{fragments/layout :: alerts}"></div>
+    <h1 class="page-title">Tableau de bord - Administrateur</h1>
+    <p class="page-sub">Vue d'ensemble de la plateforme GUIDE.</p>
+
+    <!-- Statistiques generales (informatif) -->
+    <div class="grid grid-3">
+        <div class="stat"><div class="num" th:text="${nbFilieres}">0</div><div class="lbl">Filieres</div></div>
+        <div class="stat"><div class="num" th:text="${nbModules}">0</div><div class="lbl">Modules</div></div>
+        <div class="stat"><div class="num" th:text="${nbRessources}">0</div><div class="lbl">Ressources</div></div>
+        <div class="stat"><div class="num" th:text="${nbMentors}">0</div><div class="lbl">Mentors</div></div>
+        <div class="stat"><div class="num" th:text="${nbEtudiants}">0</div><div class="lbl">Etudiants</div></div>
+        <div class="stat"><div class="num" th:text="${nbQuestions}">0</div><div class="lbl">Questions</div></div>
+    </div>
+
+    <!-- Acces aux deux espaces principaux -->
+    <div class="card" style="margin-top:18px">
+        <h3 style="margin-top:0;color:var(--navy)">Administration</h3>
+        <p class="muted" style="margin:0 0 12px">
+            Gerez l'ensemble du contenu depuis le Centre d'administration,
+            ou consultez l'historique des actions dans le Journal.</p>
+        <a class="btn btn-primary" th:href="@{/admin/centre}">Ouvrir le Centre d'administration</a>
+        <a class="btn btn-light" th:href="@{/admin/journal}">Journal d'administration</a>
+    </div>
+</div>
+<div th:replace="~{fragments/layout :: footer}"></div>
+</body>
+</html>

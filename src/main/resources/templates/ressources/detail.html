@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html lang="fr" xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+<head th:replace="~{fragments/layout :: head('Ressource')}"></head>
+<body>
+<div th:replace="~{fragments/layout :: navbar}"></div>
+<div class="container">
+    <div th:replace="~{fragments/layout :: alerts}"></div>
+    <div class="breadcrumb"><a th:href="@{/catalogue}">Catalogue</a> /
+        <span th:text="${ressource.titre}">Titre</span></div>
+
+    <div class="card">
+        <div style="display:flex;justify-content:space-between;align-items:start">
+            <h1 class="page-title" th:text="${ressource.titre}">Titre</h1>
+            <span class="tag" th:text="${ressource.type}">PDF</span>
+        </div>
+        <p th:text="${ressource.description}">Description.</p>
+
+        <table style="max-width:520px">
+            <tr><th>Filiere</th><td th:text="${ressource.module != null and ressource.module.filiere != null ? ressource.module.filiere.nom : '-'}">Filiere</td></tr>
+            <tr><th>Module</th><td th:text="${ressource.module != null ? ressource.module.nom : '-'}">Module</td></tr>
+            <tr><th>Niveau</th><td th:text="${ressource.module != null ? ressource.module.niveau : '-'}">L1</td></tr>
+            <tr><th>Type</th><td th:text="${ressource.type}">PDF</td></tr>
+            <tr><th>Auteur</th><td th:text="${ressource.auteur != null ? ressource.auteur.fullName : 'Equipe GUIDE'}">Mentor</td></tr>
+            <tr><th>Date</th><td th:text="${ressource.dateCreation}">2026-01-01</td></tr>
+        </table>
+
+        <div style="margin-top:10px">
+            <span th:each="mc : ${ressource.motsCles != null ? #strings.arraySplit(ressource.motsCles, ',') : {} }"
+                  class="tag" th:text="${#strings.trim(mc)}">tag</span>
+        </div>
+
+        <div style="margin-top:18px">
+            <button type="button" class="btn btn-primary" id="btnContenu" onclick="toggleContenu()">Consulter le contenu</button>
+
+            <form sec:authorize="hasRole('ETUDIANT')" style="display:inline"
+                  th:action="@{/etudiant/favoris/{id}/toggle(id=${ressource.id})}" method="post">
+                <input type="hidden" name="redirect" th:value="@{/ressource/{id}(id=${ressource.id})}"/>
+                <button class="btn" th:classappend="${estFavori} ? 'btn-warning' : 'btn-light'" type="submit"
+                        th:text="${estFavori} ? 'Retirer des favoris' : 'Ajouter aux favoris'">Favori</button>
+            </form>
+        </div>
+
+        <!-- Suivi de progression (etudiant) -->
+        <div sec:authorize="hasRole('ETUDIANT')" style="margin-top:18px;border-top:1px solid var(--line);padding-top:14px">
+            <strong class="muted">Enregistrer le suivi</strong>
+            <form th:action="@{/etudiant/progression/{id}/maj(id=${ressource.id})}" method="post"
+                  style="display:flex;gap:10px;align-items:end;flex-wrap:wrap;margin-top:8px">
+                <div class="form-group" style="margin:0">
+                    <label>Statut</label>
+                    <select name="statut">
+                        <option th:each="s : ${statuts}" th:value="${s}" th:text="${s}">Statut</option>
+                    </select>
+                </div>
+                <div class="form-group" style="margin:0">
+                    <label>Pourcentage</label>
+                    <input type="number" name="pourcentage" min="0" max="100" value="0" style="width:100px"/>
+                </div>
+                <button class="btn btn-success btn-sm" type="submit">Enregistrer le suivi</button>
+            </form>
+        </div>
+    </div>
+
+    <!-- Contenu interne lisible dans l'application -->
+    <div class="card" id="contenu" style="display:none">
+        <h3 style="margin-top:0;color:var(--navy)">Contenu de la ressource</h3>
+        <div class="content-box" th:if="${ressource.contenu != null and !ressource.contenu.isEmpty()}"
+             th:text="${ressource.contenu}">Contenu...</div>
+        <p class="muted" th:if="${ressource.contenu == null or ressource.contenu.isEmpty()}">
+            Le contenu detaille de cette ressource sera ajoute prochainement.</p>
+    </div>
+
+    <a class="btn btn-light" th:href="@{/catalogue}">Retour au catalogue</a>
+</div>
+<script>
+function toggleContenu() {
+    var c = document.getElementById('contenu');
+    var b = document.getElementById('btnContenu');
+    if (c.style.display === 'none' || c.style.display === '') {
+        c.style.display = 'block';
+        b.textContent = 'Masquer le contenu';
+    } else {
+        c.style.display = 'none';
+        b.textContent = 'Consulter le contenu';
+    }
+}
+</script>
+<div th:replace="~{fragments/layout :: footer}"></div>
+</body>
+</html>

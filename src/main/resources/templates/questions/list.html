@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="fr" xmlns:th="http://www.thymeleaf.org">
+<head th:replace="~{fragments/layout :: head('Questions')}"></head>
+<body>
+<div th:replace="~{fragments/layout :: navbar}"></div>
+<div class="container">
+    <div th:replace="~{fragments/layout :: alerts}"></div>
+    <div class="breadcrumb"><a th:href="@{/dashboard}">Accueil</a> / Questions</div>
+    <h1 class="page-title">Questions des etudiants</h1>
+
+    <div class="card" th:each="q : ${questions}">
+        <div style="display:flex;justify-content:space-between">
+            <strong th:text="${q.etudiant != null ? q.etudiant.fullName : 'Etudiant'}">Etudiant</strong>
+            <span th:class="${q.repondue} ? 'pill pill-green' : 'pill pill-orange'"
+                  th:text="${q.repondue} ? 'Repondue' : 'En attente'">Statut</span>
+        </div>
+        <p th:text="${q.contenu}">Contenu de la question</p>
+
+        <div th:if="${q.repondue}" style="background:#f1f5fb;border-radius:8px;padding:10px 12px">
+            <strong class="muted">Reponse</strong>
+            <p style="margin:4px 0" th:text="${q.reponse}">Reponse du mentor</p>
+            <span class="muted" style="font-size:.8rem"
+                  th:text="'Par ' + (${q.mentor != null ? q.mentor.fullName : '-'})">Mentor</span>
+        </div>
+
+        <!-- Formulaire de reponse : mentor uniquement (readOnly = false) -->
+        <form th:if="${readOnly == false}" th:action="@{/mentor/questions/{id}/repondre(id=${q.id})}" method="post" style="margin-top:10px">
+            <div class="form-group">
+                <textarea name="reponse" rows="3" th:text="${q.reponse}"
+                          placeholder="Votre reponse..."></textarea>
+            </div>
+            <button class="btn btn-success btn-sm" type="submit"
+                    th:text="${q.repondue} ? 'Mettre a jour' : 'Repondre'">Repondre</button>
+        </form>
+
+        <!-- Suppression : admin uniquement (readOnly = true) -->
+        <form th:if="${readOnly == true}" th:action="@{/admin/questions/{id}/delete(id=${q.id})}" method="post"
+              style="margin-top:10px" onsubmit="return confirm('Voulez-vous vraiment supprimer cet element ?');">
+            <button class="btn btn-danger btn-sm" type="submit">Supprimer</button>
+        </form>
+    </div>
+    <div th:if="${questions.isEmpty()}" class="card muted">Aucune question.</div>
+</div>
+<div th:replace="~{fragments/layout :: footer}"></div>
+</body>
+</html>

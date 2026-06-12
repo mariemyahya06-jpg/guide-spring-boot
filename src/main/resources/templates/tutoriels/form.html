@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="fr" xmlns:th="http://www.thymeleaf.org">
+<head th:replace="~{fragments/layout :: head('Tutoriel')}"></head>
+<body>
+<div th:replace="~{fragments/layout :: navbar}"></div>
+<div class="container">
+    <div th:replace="~{fragments/layout :: alerts}"></div>
+    <div class="breadcrumb"><a th:href="@{/mentor/tutoriels}">Tutoriels</a> /
+        <span th:text="${tutoriel.id == null} ? 'Nouveau' : 'Modifier'">Nouveau</span></div>
+    <h1 class="page-title" th:text="${tutoriel.id == null} ? 'Nouveau tutoriel' : 'Modifier le tutoriel'">Tutoriel</h1>
+
+    <div class="card">
+        <form th:action="@{/mentor/tutoriels/save}" th:object="${tutoriel}" method="post">
+            <input type="hidden" th:field="*{id}"/>
+            <div class="form-group">
+                <label>Titre</label>
+                <input type="text" th:field="*{titre}"/>
+                <span class="error" th:if="${#fields.hasErrors('titre')}" th:errors="*{titre}"></span>
+            </div>
+            <div class="form-group">
+                <label>Module</label>
+                <select name="module">
+                    <option value="">-- Choisir --</option>
+                    <option th:each="m : ${modules}" th:value="${m.id}"
+                            th:text="${m.nom + ' (' + m.niveau + ')'}"
+                            th:selected="${tutoriel.module != null and tutoriel.module.id == m.id}">Module</option>
+                </select>
+                <span class="error" th:if="${#fields.hasErrors('module')}" th:errors="*{module}"></span>
+            </div>
+            <div class="form-group">
+                <label>Lien video (facultatif)</label>
+                <input type="text" th:field="*{videoUrl}" placeholder="https://..."/>
+            </div>
+            <div class="form-group">
+                <label>Contenu</label>
+                <textarea th:field="*{contenu}" rows="8"></textarea>
+                <span class="error" th:if="${#fields.hasErrors('contenu')}" th:errors="*{contenu}"></span>
+            </div>
+            <button class="btn btn-primary" type="submit">Enregistrer</button>
+            <a class="btn btn-light" th:href="@{/mentor/tutoriels}">Annuler</a>
+        </form>
+    </div>
+</div>
+<div th:replace="~{fragments/layout :: footer}"></div>
+</body>
+</html>

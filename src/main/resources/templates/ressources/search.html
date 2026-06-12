@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="fr" xmlns:th="http://www.thymeleaf.org">
+<head th:replace="~{fragments/layout :: head('Catalogue')}"></head>
+<body>
+<div th:replace="~{fragments/layout :: navbar}"></div>
+<div class="container">
+    <div th:replace="~{fragments/layout :: alerts}"></div>
+    <div class="breadcrumb"><a th:href="@{/dashboard}">Accueil</a> / Catalogue</div>
+    <h1 class="page-title">Catalogue des ressources</h1>
+    <p class="page-sub">Recherche par filiere, niveau ou mot-cle. Cliquez sur une carte pour ouvrir la ressource.</p>
+
+    <div class="card">
+        <form th:action="@{/catalogue}" method="get" class="grid grid-3" style="align-items:end">
+            <div class="form-group" style="margin:0">
+                <label>Filiere</label>
+                <select name="filiereId">
+                    <option value="">Toutes</option>
+                    <option th:each="f : ${filieres}" th:value="${f.id}" th:text="${f.nom}"
+                            th:selected="${filiereId != null and filiereId == f.id}">Filiere</option>
+                </select>
+            </div>
+            <div class="form-group" style="margin:0">
+                <label>Niveau</label>
+                <select name="niveau">
+                    <option value="">Tous</option>
+                    <option th:each="n : ${niveaux}" th:value="${n}" th:text="${n}"
+                            th:selected="${niveau == n}">L1</option>
+                </select>
+            </div>
+            <div class="form-group" style="margin:0">
+                <label>Mot-cle</label>
+                <input type="text" name="motCle" th:value="${motCle}" placeholder="java, spring..."/>
+            </div>
+            <div style="grid-column:1/-1">
+                <button class="btn btn-primary" type="submit">Rechercher</button>
+                <a class="btn btn-light" th:href="@{/catalogue}">Reinitialiser</a>
+            </div>
+        </form>
+    </div>
+
+    <div class="grid grid-2">
+        <a class="card card-link" th:each="r : ${ressources.content}"
+           th:href="@{/ressource/{id}(id=${r.id})}">
+            <div style="display:flex;justify-content:space-between;align-items:start">
+                <h3 style="margin:0 0 6px" th:text="${r.titre}">Titre</h3>
+                <span class="tag" th:text="${r.type}">PDF</span>
+            </div>
+            <p class="muted" style="margin:6px 0" th:text="${r.description}">Description</p>
+            <div class="muted" style="font-size:.82rem">
+                <span th:text="${r.module != null ? r.module.nom : ''}">Module</span> ·
+                <span th:text="${r.module != null ? r.module.niveau : ''}">L1</span> ·
+                <span th:text="${r.module != null and r.module.filiere != null ? r.module.filiere.nom : ''}">Filiere</span>
+            </div>
+            <div style="margin-top:10px;color:var(--blue);font-weight:600">Voir le detail &#8594;</div>
+        </a>
+        <div th:if="${ressources.empty}" class="card muted">Aucune ressource ne correspond a votre recherche.</div>
+    </div>
+
+    <div class="pagination" th:if="${ressources.totalPages > 1}">
+        <span th:each="i : ${#numbers.sequence(0, ressources.totalPages - 1)}">
+            <a th:href="@{/catalogue(page=${i},filiereId=${filiereId},niveau=${niveau},motCle=${motCle},sort=${sort})}"
+               th:text="${i + 1}" th:classappend="${i == ressources.number} ? 'active'">1</a>
+        </span>
+    </div>
+</div>
+<div th:replace="~{fragments/layout :: footer}"></div>
+</body>
+</html>

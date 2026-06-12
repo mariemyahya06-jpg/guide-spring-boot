@@ -1,0 +1,89 @@
+classDiagram
+    direction LR
+
+    class User {
+        +Long id
+        +String username
+        +String fullName
+        +String email
+        +String password
+        +Role role
+        +boolean enabled
+    }
+    class Role {
+        <<enumeration>>
+        ADMIN
+        MENTOR
+        ETUDIANT
+    }
+    class Filiere {
+        +Long id
+        +String nom
+        +String description
+    }
+    class Module {
+        +Long id
+        +String nom
+        +String niveau
+        +String description
+    }
+    class Ressource {
+        +Long id
+        +String titre
+        +String description
+        +String type
+        +String url
+        +String motsCles
+        +LocalDate dateCreation
+    }
+    class Tutoriel {
+        +Long id
+        +String titre
+        +String contenu
+        +String videoUrl
+        +LocalDate dateCreation
+    }
+    class Favori {
+        +Long id
+        +LocalDate dateAjout
+    }
+    class Progression {
+        +Long id
+        +StatutProgression statut
+        +int pourcentage
+        +LocalDate dateMaj
+    }
+    class StatutProgression {
+        <<enumeration>>
+        NON_COMMENCE
+        EN_COURS
+        TERMINE
+    }
+    class Question {
+        +Long id
+        +String contenu
+        +String reponse
+        +LocalDateTime dateCreation
+        +LocalDateTime dateReponse
+    }
+
+    User --> Role : role
+    Progression --> StatutProgression : statut
+
+    Filiere "1" --> "0..*" Module : contient
+    Module "1" --> "0..*" Ressource : contient
+    Module "1" --> "0..*" Tutoriel : contient
+
+    User "0..*" --> "0..1" Filiere : inscrit a
+    Ressource "0..*" --> "0..1" User : auteur (mentor)
+    Tutoriel "0..*" --> "0..1" User : auteur (mentor)
+
+    User "1" --> "0..*" Favori : possede
+    Ressource "1" --> "0..*" Favori : referencee par
+
+    User "1" --> "0..*" Progression : suit
+    Ressource "1" --> "0..*" Progression : suivie par
+
+    User "1" --> "0..*" Question : pose (etudiant)
+    User "1" --> "0..*" Question : repond (mentor)
+    Ressource "0..1" --> "0..*" Question : concernee par

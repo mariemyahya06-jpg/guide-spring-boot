@@ -1,0 +1,15 @@
+<!DOCTYPE html>
+<html lang="fr" xmlns:th="http://www.thymeleaf.org">
+<head th:replace="~{fragments/layout :: head('Erreur serveur')}"></head>
+<body>
+<div class="login-wrap" style="background:linear-gradient(135deg,#16263f,#e08a2b)">
+    <div class="login-box" style="text-align:center">
+        <h1 style="color:#e08a2b">500</h1>
+        <p class="sub">Une erreur est survenue</p>
+        <p class="muted" style="margin-bottom:18px">
+            Un probleme inattendu s'est produit. Veuillez reessayer.</p>
+        <a class="btn btn-primary" style="width:100%" th:href="@{/dashboard}">Retour a l'accueil</a>
+    </div>
+</div>
+</body>
+</html>

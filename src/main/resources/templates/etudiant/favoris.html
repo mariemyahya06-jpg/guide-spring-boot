@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html lang="fr" xmlns:th="http://www.thymeleaf.org">
+<head th:replace="~{fragments/layout :: head('Favoris')}"></head>
+<body>
+<div th:replace="~{fragments/layout :: navbar}"></div>
+<div class="container">
+    <div th:replace="~{fragments/layout :: alerts}"></div>
+    <div class="breadcrumb"><a th:href="@{/etudiant}">Accueil</a> / Favoris</div>
+    <h1 class="page-title">Mes ressources favorites</h1>
+
+    <div class="grid grid-2">
+        <div class="card" th:each="fav : ${favoris}">
+            <h3 style="margin:0 0 6px;color:var(--navy)">
+                <a th:href="@{/ressource/{id}(id=${fav.ressource.id})}" th:text="${fav.ressource.titre}">Titre</a>
+            </h3>
+            <p class="muted" style="margin:4px 0" th:text="${fav.ressource.description}">Description</p>
+            <span class="muted" style="font-size:.8rem" th:text="'Ajoute le ' + ${fav.dateAjout}">date</span>
+            <div style="margin-top:10px">
+                <a class="btn btn-primary btn-sm" th:href="@{/ressource/{id}(id=${fav.ressource.id})}">Voir</a>
+                <form th:action="@{/etudiant/favoris/{id}/toggle(id=${fav.ressource.id})}" method="post" style="display:inline">
+                    <button class="btn btn-danger btn-sm" type="submit">Retirer</button>
+                </form>
+            </div>
+        </div>
+        <div th:if="${favoris.isEmpty()}" class="card muted">Vous n'avez pas encore ajoute de favoris. Parcourez le
+            <a th:href="@{/catalogue}">catalogue</a> pour en ajouter.</div>
+    </div>
+</div>
+<div th:replace="~{fragments/layout :: footer}"></div>
+</body>
+</html>

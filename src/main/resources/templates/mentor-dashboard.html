@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html lang="fr" xmlns:th="http://www.thymeleaf.org">
+<head th:replace="~{fragments/layout :: head('Mentor')}"></head>
+<body>
+<div th:replace="~{fragments/layout :: navbar}"></div>
+<div class="container">
+    <div th:replace="~{fragments/layout :: alerts}"></div>
+    <div class="breadcrumb"><a th:href="@{/dashboard}">Accueil</a> / Tableau de bord Mentor</div>
+    <h1 class="page-title">Tableau de bord - Mentor</h1>
+    <p class="page-sub">Gerez vos ressources, tutoriels et repondez aux etudiants. Cliquez sur une carte.</p>
+
+    <div class="grid grid-3">
+        <a class="stat stat-link" th:href="@{/mentor/ressources}">
+            <div class="num" th:text="${nbRessources}">0</div><div class="lbl">Ressources</div></a>
+        <a class="stat stat-link" th:href="@{/mentor/tutoriels}">
+            <div class="num" th:text="${nbTutoriels}">0</div><div class="lbl">Tutoriels</div></a>
+        <a class="stat stat-link" th:href="@{/mentor/questions}">
+            <div class="num" th:text="${nbQuestionsEnAttente}">0</div><div class="lbl">Questions en attente</div></a>
+    </div>
+
+    <div class="card" style="margin-top:18px">
+        <h3 style="margin-top:0;color:var(--navy)">Acces rapide</h3>
+        <a class="btn btn-primary btn-sm" th:href="@{/mentor/ressources/new}">+ Nouvelle ressource</a>
+        <a class="btn btn-primary btn-sm" th:href="@{/mentor/tutoriels/new}">+ Nouveau tutoriel</a>
+        <a class="btn btn-light btn-sm" th:href="@{/mentor/questions}">Repondre aux questions</a>
+    </div>
+</div>
+<div th:replace="~{fragments/layout :: footer}"></div>
+</body>
+</html>

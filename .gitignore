@@ -1,0 +1,29 @@
+# ===== Build =====
+target/
+build/
+*.class
+*.jar
+*.war
+
+# ===== Logs =====
+*.log
+logs/
+
+# ===== IDE =====
+.idea/
+*.iml
+*.iws
+*.ipr
+.vscode/
+.settings/
+.classpath
+.project
+bin/
+
+# ===== OS =====
+.DS_Store
+Thumbs.db
+
+# ===== Divers =====
+*.zip
+_diag_preview.png

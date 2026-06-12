@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="fr" xmlns:th="http://www.thymeleaf.org">
+<head th:replace="~{fragments/layout :: head('Utilisateurs')}"></head>
+<body>
+<div th:replace="~{fragments/layout :: navbar}"></div>
+<div class="container">
+    <div th:replace="~{fragments/layout :: alerts}"></div>
+    <div class="breadcrumb"><a th:href="@{/admin/centre}">Centre d'administration</a> / Utilisateurs</div>
+    <h1 class="page-title">Gestion des utilisateurs</h1>
+
+    <div class="toolbar">
+        <a class="btn btn-light" th:href="@{/admin/centre}">&#8592; Centre d'administration</a>
+        <form th:action="@{/admin/users}" method="get">
+            <input type="text" name="keyword" th:value="${keyword}" placeholder="Rechercher (nom, username)..."/>
+            <button class="btn btn-light" type="submit">Rechercher</button>
+        </form>
+        <a class="btn btn-primary" th:href="@{/admin/users/new}">+ Nouvel utilisateur</a>
+    </div>
+
+    <div class="card" style="padding:0;overflow:hidden">
+        <table>
+            <thead><tr><th>ID</th><th>Username</th><th>Nom complet</th><th>Email</th><th>Role</th><th>Actif</th><th>Actions</th></tr></thead>
+            <tbody>
+            <tr th:each="u : ${users.content}">
+                <td th:text="${u.id}">1</td>
+                <td th:text="${u.username}">user</td>
+                <td th:text="${u.fullName}">Nom</td>
+                <td th:text="${u.email}">mail</td>
+                <td><span class="badge-role" th:text="${u.role}">ROLE</span></td>
+                <td><span th:class="${u.enabled} ? 'pill pill-green' : 'pill pill-grey'"
+                          th:text="${u.enabled} ? 'Oui' : 'Non'">Oui</span></td>
+                <td>
+                    <a class="btn btn-light btn-sm" th:href="@{/admin/users/{id}/edit(id=${u.id})}">Modifier</a>
+                    <form th:action="@{/admin/users/{id}/delete(id=${u.id})}" method="post" style="display:inline"
+                          onsubmit="return confirm('Voulez-vous vraiment supprimer cet element ?');">
+                        <button class="btn btn-danger btn-sm" type="submit">Supprimer</button>
+                    </form>
+                </td>
+            </tr>
+            <tr th:if="${users.empty}"><td colspan="7" class="muted" style="text-align:center">Aucun utilisateur.</td></tr>
+            </tbody>
+        </table>
+    </div>
+
+    <div class="pagination" th:if="${users.totalPages > 1}">
+        <span th:each="i : ${#numbers.sequence(0, users.totalPages - 1)}">
+            <a th:href="@{/admin/users(page=${i},keyword=${keyword},sort=${sort})}"
+               th:text="${i + 1}" th:classappend="${i == users.number} ? 'active'">1</a>
+        </span>
+    </div>
+</div>
+<div th:replace="~{fragments/layout :: footer}"></div>
+</body>
+</html>

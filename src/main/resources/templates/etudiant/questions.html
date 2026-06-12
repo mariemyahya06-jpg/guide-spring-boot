@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="fr" xmlns:th="http://www.thymeleaf.org">
+<head th:replace="~{fragments/layout :: head('Mes questions')}"></head>
+<body>
+<div th:replace="~{fragments/layout :: navbar}"></div>
+<div class="container">
+    <div th:replace="~{fragments/layout :: alerts}"></div>
+    <div class="breadcrumb"><a th:href="@{/etudiant}">Accueil</a> / Mes questions</div>
+    <h1 class="page-title">Mes questions</h1>
+
+    <div class="card">
+        <h3 style="margin-top:0;color:var(--navy)">Poser une nouvelle question</h3>
+        <form th:action="@{/etudiant/questions/poser}" th:object="${question}" method="post">
+            <div class="form-group">
+                <textarea th:field="*{contenu}" rows="3" placeholder="Votre question..."></textarea>
+                <span class="error" th:if="${#fields.hasErrors('contenu')}" th:errors="*{contenu}"></span>
+            </div>
+            <button class="btn btn-primary" type="submit">Envoyer</button>
+        </form>
+    </div>
+
+    <div class="card" th:each="q : ${questions}">
+        <div style="display:flex;justify-content:space-between">
+            <span class="muted" style="font-size:.82rem" th:text="${#temporals.format(q.dateCreation, 'dd/MM/yyyy HH:mm')}">date</span>
+            <span th:class="${q.repondue} ? 'pill pill-green' : 'pill pill-orange'"
+                  th:text="${q.repondue} ? 'Repondue' : 'En attente'">Statut</span>
+        </div>
+        <p th:text="${q.contenu}">Question</p>
+        <div th:if="${q.repondue}" style="background:#f1f5fb;border-radius:8px;padding:10px 12px">
+            <strong class="muted">Reponse</strong>
+            <p style="margin:4px 0" th:text="${q.reponse}">Reponse</p>
+            <span class="muted" style="font-size:.8rem" th:text="'Par ' + (${q.mentor != null ? q.mentor.fullName : '-'})">Mentor</span>
+        </div>
+    </div>
+    <div th:if="${questions.isEmpty()}" class="card muted">Vous n'avez pose aucune question.</div>
+</div>
+<div th:replace="~{fragments/layout :: footer}"></div>
+</body>
+</html>

@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+<head th:fragment="head(title)">
+    <meta charset="UTF-8"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+    <title th:text="${title} + ' - GUIDE'">GUIDE</title>
+    <link rel="stylesheet" th:href="@{/css/style.css}"/>
+</head>
+<body>
+
+<!-- ===================== NAVBAR ===================== -->
+<div th:fragment="navbar" class="navbar">
+    <a class="brand" th:href="@{/dashboard}">GUIDE<span>.</span></a>
+    <nav>
+        <!-- Liens ADMIN (navigation essentielle ; les sections sont dans le Centre) -->
+        <a sec:authorize="hasRole('ADMIN')" th:href="@{/admin}">Tableau de bord</a>
+        <a sec:authorize="hasRole('ADMIN')" th:href="@{/admin/centre}">Centre d'administration</a>
+        <a sec:authorize="hasRole('ADMIN')" th:href="@{/admin/journal}">Journal</a>
+        <!-- Liens MENTOR -->
+        <a sec:authorize="hasRole('MENTOR')" th:href="@{/mentor}">Tableau de bord</a>
+        <a sec:authorize="hasRole('MENTOR')" th:href="@{/mentor/ressources}">Mes ressources</a>
+        <a sec:authorize="hasRole('MENTOR')" th:href="@{/mentor/tutoriels}">Tutoriels</a>
+        <a sec:authorize="hasRole('MENTOR')" th:href="@{/mentor/questions}">Questions</a>
+        <!-- Liens ETUDIANT -->
+        <a sec:authorize="hasRole('ETUDIANT')" th:href="@{/etudiant}">Tableau de bord</a>
+        <a sec:authorize="hasAnyRole('ETUDIANT','MENTOR','ADMIN')" th:href="@{/catalogue}">Catalogue</a>
+        <a sec:authorize="hasRole('ETUDIANT')" th:href="@{/etudiant/favoris}">Favoris</a>
+        <a sec:authorize="hasRole('ETUDIANT')" th:href="@{/etudiant/suivies}">Ressources suivies</a>
+        <a sec:authorize="hasRole('ETUDIANT')" th:href="@{/etudiant/questions}">Mes questions</a>
+    </nav>
+    <div class="user">
+        <span th:if="${currentUser != null}" th:text="${currentUser.fullName}">Nom</span>
+        <span class="badge-role" th:if="${currentUser != null}" th:text="${currentUser.role}">ROLE</span>
+        <form th:action="@{/logout}" method="post" style="margin:0">
+            <button class="btn-logout" type="submit">Deconnexion</button>
+        </form>
+    </div>
+</div>
+
+<!-- ===================== BREADCRUMB ===================== -->
+<div th:fragment="breadcrumb(items)" class="breadcrumb">
+    <a th:href="@{/dashboard}">Accueil</a>
+    <span th:each="item : ${items}"> / <span th:text="${item}">...</span></span>
+</div>
+
+<!-- ===================== ALERTS (messages flash) ===================== -->
+<div th:fragment="alerts">
+    <div th:if="${success}" class="alert alert-ok" style="margin-bottom:16px">
+        &#10003; <span th:text="${success}">Message</span></div>
+    <div th:if="${error}" class="alert alert-error" style="margin-bottom:16px">
+        <span th:text="${error}">Message</span></div>
+</div>
+
+<!-- ===================== FOOTER ===================== -->
+<div th:fragment="footer" class="footer">
+    GUIDE - Portail d'Orientation et de Suivi Etudiant &copy; 2025-2026 - Spring Boot
+</div>
+
+</body>
+</html>

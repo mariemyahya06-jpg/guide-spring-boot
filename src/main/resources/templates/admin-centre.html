@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="fr" xmlns:th="http://www.thymeleaf.org">
+<head th:replace="~{fragments/layout :: head('Centre d administration')}"></head>
+<body>
+<div th:replace="~{fragments/layout :: navbar}"></div>
+<div class="container">
+    <div class="breadcrumb"><a th:href="@{/admin}">Accueil</a> / Centre d'administration</div>
+    <div th:replace="~{fragments/layout :: alerts}"></div>
+    <h1 class="page-title">Centre d'administration</h1>
+    <p class="page-sub">Gerez l'ensemble de la plateforme depuis un seul endroit.</p>
+
+    <div class="grid grid-3">
+        <a class="card card-link" th:href="@{/admin/filieres}">
+            <h3 style="margin:0 0 6px;color:var(--navy)">Gestion des filieres</h3>
+            <p class="muted" style="margin:0">Ajouter, modifier ou supprimer les filieres (specialites).</p>
+        </a>
+        <a class="card card-link" th:href="@{/admin/modules}">
+            <h3 style="margin:0 0 6px;color:var(--navy)">Gestion des modules</h3>
+            <p class="muted" style="margin:0">Organiser les modules de chaque filiere et leur niveau.</p>
+        </a>
+        <a class="card card-link" th:href="@{/admin/ressources}">
+            <h3 style="margin:0 0 6px;color:var(--navy)">Gestion des ressources</h3>
+            <p class="muted" style="margin:0">Gerer les cours, TD et videos disponibles pour les etudiants.</p>
+        </a>
+        <a class="card card-link" th:href="@{/admin/users}">
+            <h3 style="margin:0 0 6px;color:var(--navy)">Gestion des utilisateurs</h3>
+            <p class="muted" style="margin:0">Administrer les comptes etudiants, mentors et administrateurs.</p>
+        </a>
+        <a class="card card-link" th:href="@{/admin/questions}">
+            <h3 style="margin:0 0 6px;color:var(--navy)">Gestion des questions</h3>
+            <p class="muted" style="margin:0">Consulter et moderer les questions posees par les etudiants.</p>
+        </a>
+        <a class="card card-link" th:href="@{/admin/journal}">
+            <h3 style="margin:0 0 6px;color:var(--navy)">Journal d'administration</h3>
+            <p class="muted" style="margin:0">Historique des actions (creation, modification, suppression).</p>
+        </a>
+    </div>
+</div>
+<div th:replace="~{fragments/layout :: footer}"></div>
+</body>
+</html>

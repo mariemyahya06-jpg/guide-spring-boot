@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="fr" xmlns:th="http://www.thymeleaf.org">
+<head th:replace="~{fragments/layout :: head('Connexion')}"></head>
+<body>
+<div class="login-wrap">
+    <div class="login-box">
+        <h1>GUIDE</h1>
+        <p class="sub">Portail d'Orientation et de Suivi Etudiant</p>
+
+        <div th:if="${param.error}" class="alert alert-error">
+            Nom d'utilisateur ou mot de passe incorrect.
+        </div>
+        <div th:if="${param.logout}" class="alert alert-ok">
+            Vous etes deconnecte.
+        </div>
+        <div th:if="${registered}" class="alert alert-ok" th:text="${registered}">
+            Compte cree avec succes.
+        </div>
+
+        <form th:action="@{/login}" method="post">
+            <div class="form-group">
+                <label for="username">Nom d'utilisateur</label>
+                <input type="text" id="username" name="username" required autofocus/>
+            </div>
+            <div class="form-group">
+                <label for="password">Mot de passe</label>
+                <input type="password" id="password" name="password" required/>
+            </div>
+            <button type="submit" class="btn btn-primary" style="width:100%">Se connecter</button>
+        </form>
+
+        <div style="text-align:center;margin-top:14px;font-size:.9rem">
+            Pas encore de compte ?
+            <a th:href="@{/register}">Creer un compte etudiant</a>
+        </div>
+
+        <div class="hint">
+            <strong>Comptes de demonstration :</strong><br/>
+            admin / admin123<br/>
+            mentor / mentor123<br/>
+            etudiant / etudiant123
+        </div>
+    </div>
+</div>
+</body>
+</html>

@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html lang="fr" xmlns:th="http://www.thymeleaf.org">
+<head th:replace="~{fragments/layout :: head('Mes ressources')}"></head>
+<body>
+<div th:replace="~{fragments/layout :: navbar}"></div>
+<div class="container">
+    <div th:replace="~{fragments/layout :: alerts}"></div>
+    <div class="breadcrumb"><a th:href="@{/mentor}">Mentor</a> / Ressources</div>
+    <h1 class="page-title">Ressources</h1>
+    <div class="toolbar">
+        <a class="btn btn-primary" th:href="@{/mentor/ressources/new}">+ Nouvelle ressource</a>
+    </div>
+    <div class="card" style="padding:0;overflow:hidden">
+        <table>
+            <thead><tr><th>Titre</th><th>Type</th><th>Module</th><th>Auteur</th><th>Actions</th></tr></thead>
+            <tbody>
+            <tr th:each="r : ${ressources}">
+                <td><a th:href="@{/ressource/{id}(id=${r.id})}" th:text="${r.titre}">Titre</a></td>
+                <td><span class="tag" th:text="${r.type}">PDF</span></td>
+                <td th:text="${r.module != null ? r.module.nom : '-'}">Module</td>
+                <td th:text="${r.auteur != null ? r.auteur.fullName : '-'}">Auteur</td>
+                <td><a class="btn btn-light btn-sm" th:href="@{/mentor/ressources/{id}/edit(id=${r.id})}">Modifier</a></td>
+            </tr>
+            <tr th:if="${ressources.isEmpty()}"><td colspan="5" class="muted" style="text-align:center">Aucune ressource.</td></tr>
+            </tbody>
+        </table>
+    </div>
+</div>
+<div th:replace="~{fragments/layout :: footer}"></div>
+</body>
+</html>

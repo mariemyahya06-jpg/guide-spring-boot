@@ -1,0 +1,15 @@
+<!DOCTYPE html>
+<html lang="fr" xmlns:th="http://www.thymeleaf.org">
+<head th:replace="~{fragments/layout :: head('Page introuvable')}"></head>
+<body>
+<div class="login-wrap">
+    <div class="login-box" style="text-align:center">
+        <h1>404</h1>
+        <p class="sub">Page introuvable</p>
+        <p class="muted" style="margin-bottom:18px">
+            La page que vous recherchez n'existe pas ou a ete deplacee.</p>
+        <a class="btn btn-primary" style="width:100%" th:href="@{/dashboard}">Retour a l'accueil</a>
+    </div>
+</div>
+</body>
+</html>

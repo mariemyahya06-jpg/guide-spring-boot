@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="fr" xmlns:th="http://www.thymeleaf.org">
+<head th:replace="~{fragments/layout :: head('Ressources')}"></head>
+<body>
+<div th:replace="~{fragments/layout :: navbar}"></div>
+<div class="container">
+    <div th:replace="~{fragments/layout :: alerts}"></div>
+    <div class="breadcrumb"><a th:href="@{/admin/centre}">Centre d'administration</a> / Ressources</div>
+    <h1 class="page-title">Gestion des ressources</h1>
+
+    <div class="toolbar">
+        <a class="btn btn-light" th:href="@{/admin/centre}">&#8592; Centre d'administration</a>
+        <form th:action="@{/admin/ressources}" method="get">
+            <input type="text" name="keyword" th:value="${keyword}" placeholder="Rechercher (titre, mot-cle)..."/>
+            <button class="btn btn-light" type="submit">Rechercher</button>
+        </form>
+        <a class="btn btn-primary" th:href="@{/admin/ressources/new}">+ Nouvelle ressource</a>
+    </div>
+
+    <div class="card" style="padding:0;overflow:hidden">
+        <table>
+            <thead><tr><th>ID</th><th>Titre</th><th>Type</th><th>Module</th><th>Niveau</th><th>Actions</th></tr></thead>
+            <tbody>
+            <tr th:each="r : ${ressources.content}">
+                <td th:text="${r.id}">1</td>
+                <td><a th:href="@{/ressource/{id}(id=${r.id})}" th:text="${r.titre}">Titre</a></td>
+                <td><span class="tag" th:text="${r.type}">PDF</span></td>
+                <td th:text="${r.module != null ? r.module.nom : '-'}">Module</td>
+                <td th:text="${r.module != null ? r.module.niveau : '-'}">L1</td>
+                <td>
+                    <a class="btn btn-light btn-sm" th:href="@{/admin/ressources/{id}/edit(id=${r.id})}">Modifier</a>
+                    <form th:action="@{/admin/ressources/{id}/delete(id=${r.id})}" method="post" style="display:inline"
+                          onsubmit="return confirm('Voulez-vous vraiment supprimer cet element ?');">
+                        <button class="btn btn-danger btn-sm" type="submit">Supprimer</button>
+                    </form>
+                </td>
+            </tr>
+            <tr th:if="${ressources.empty}"><td colspan="6" class="muted" style="text-align:center">Aucune ressource.</td></tr>
+            </tbody>
+        </table>
+    </div>
+
+    <div class="pagination" th:if="${ressources.totalPages > 1}">
+        <span th:each="i : ${#numbers.sequence(0, ressources.totalPages - 1)}">
+            <a th:href="@{/admin/ressources(page=${i},keyword=${keyword},sort=${sort})}"
+               th:text="${i + 1}" th:classappend="${i == ressources.number} ? 'active'">1</a>
+        </span>
+    </div>
+</div>
+<div th:replace="~{fragments/layout :: footer}"></div>
+</body>
+</html>

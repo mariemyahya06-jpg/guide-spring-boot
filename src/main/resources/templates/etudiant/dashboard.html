@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="fr" xmlns:th="http://www.thymeleaf.org">
+<head th:replace="~{fragments/layout :: head('Espace Etudiant')}"></head>
+<body>
+<div th:replace="~{fragments/layout :: navbar}"></div>
+<div class="container">
+    <div class="breadcrumb"><a th:href="@{/dashboard}">Accueil</a> / Espace Etudiant</div>
+    <div th:replace="~{fragments/layout :: alerts}"></div>
+    <h1 class="page-title">Bienvenue <span th:text="${currentUser != null ? currentUser.fullName : ''}"></span></h1>
+    <p class="page-sub">Voici votre espace personnel. Que souhaitez-vous faire ?</p>
+
+    <!-- Actions principales (sans doublon) -->
+    <div class="card">
+        <h3 style="margin-top:0;color:var(--navy)">Demarrer</h3>
+        <div style="display:flex;gap:10px;flex-wrap:wrap">
+            <a class="btn btn-primary" th:href="@{/catalogue}">Parcourir le catalogue</a>
+        </div>
+    </div>
+
+    <!-- Mon activite : cartes cliquables -->
+    <h3 style="color:var(--navy);margin-bottom:10px">Mon activite</h3>
+    <div class="grid grid-3">
+        <a class="card card-link" th:href="@{/etudiant/favoris}">
+            <strong style="color:var(--navy)">Favoris</strong>
+            <p th:if="${nbFavoris == 0}" class="muted" style="margin:8px 0">
+                Vous n'avez pas encore ajoute de favoris.</p>
+            <p th:if="${nbFavoris > 0}" class="muted" style="margin:8px 0"
+               th:text="'Vous avez ' + ${nbFavoris} + ' ressource(s) en favoris.'">...</p>
+            <span style="color:var(--blue);font-weight:600">Voir mes favoris &#8594;</span>
+        </a>
+
+        <a class="card card-link" th:href="@{/etudiant/suivies}">
+            <strong style="color:var(--navy)">Ressources suivies</strong>
+            <p th:if="${nbProgressions == 0}" class="muted" style="margin:8px 0">
+                Vous ne suivez aucune ressource pour le moment.</p>
+            <p th:if="${nbProgressions > 0}" class="muted" style="margin:8px 0"
+               th:text="'Vous suivez ' + ${nbProgressions} + ' ressource(s).'">...</p>
+            <span style="color:var(--blue);font-weight:600">Voir le suivi &#8594;</span>
+        </a>
+
+        <a class="card card-link" th:href="@{/etudiant/questions}">
+            <strong style="color:var(--navy)">Mes questions</strong>
+            <p th:if="${nbQuestions == 0}" class="muted" style="margin:8px 0">
+                Vous n'avez pose aucune question.</p>
+            <p th:if="${nbQuestions > 0}" class="muted" style="margin:8px 0"
+               th:text="'Vous avez pose ' + ${nbQuestions} + ' question(s).'">...</p>
+            <span style="color:var(--blue);font-weight:600">Poser une question &#8594;</span>
+        </a>
+    </div>
+</div>
+<div th:replace="~{fragments/layout :: footer}"></div>
+</body>
+</html>

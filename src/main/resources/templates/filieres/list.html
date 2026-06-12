@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="fr" xmlns:th="http://www.thymeleaf.org">
+<head th:replace="~{fragments/layout :: head('Filieres')}"></head>
+<body>
+<div th:replace="~{fragments/layout :: navbar}"></div>
+<div class="container">
+    <div th:replace="~{fragments/layout :: alerts}"></div>
+    <div class="breadcrumb"><a th:href="@{/admin/centre}">Centre d'administration</a> / Filieres</div>
+    <h1 class="page-title">Gestion des filieres</h1>
+
+    <div class="toolbar">
+        <a class="btn btn-light" th:href="@{/admin/centre}">&#8592; Centre d'administration</a>
+        <form th:action="@{/admin/filieres}" method="get">
+            <input type="text" name="keyword" th:value="${keyword}" placeholder="Rechercher une filiere..."/>
+            <button class="btn btn-light" type="submit">Rechercher</button>
+        </form>
+        <a class="btn btn-primary" th:href="@{/admin/filieres/new}">+ Nouvelle filiere</a>
+    </div>
+
+    <div class="card" style="padding:0;overflow:hidden">
+        <table>
+            <thead><tr><th>ID</th><th>Nom</th><th>Description</th><th>Modules</th><th>Actions</th></tr></thead>
+            <tbody>
+            <tr th:each="f : ${filieres.content}">
+                <td th:text="${f.id}">1</td>
+                <td th:text="${f.nom}">Nom</td>
+                <td class="muted" th:text="${f.description}">Desc</td>
+                <td th:text="${f.modules.size()}">0</td>
+                <td>
+                    <a class="btn btn-light btn-sm" th:href="@{/admin/filieres/{id}/edit(id=${f.id})}">Modifier</a>
+                    <form th:action="@{/admin/filieres/{id}/delete(id=${f.id})}" method="post" style="display:inline"
+                          onsubmit="return confirm('Voulez-vous vraiment supprimer cet element ?');">
+                        <button class="btn btn-danger btn-sm" type="submit">Supprimer</button>
+                    </form>
+                </td>
+            </tr>
+            <tr th:if="${filieres.empty}"><td colspan="5" class="muted" style="text-align:center">Aucune filiere.</td></tr>
+            </tbody>
+        </table>
+    </div>
+
+    <div class="pagination" th:if="${filieres.totalPages > 1}">
+        <span th:each="i : ${#numbers.sequence(0, filieres.totalPages - 1)}">
+            <a th:href="@{/admin/filieres(page=${i},keyword=${keyword},sort=${sort})}"
+               th:text="${i + 1}" th:classappend="${i == filieres.number} ? 'active'">1</a>
+        </span>
+    </div>
+</div>
+<div th:replace="~{fragments/layout :: footer}"></div>
+</body>
+</html>

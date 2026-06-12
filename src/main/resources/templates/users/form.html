@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="fr" xmlns:th="http://www.thymeleaf.org">
+<head th:replace="~{fragments/layout :: head('Utilisateur')}"></head>
+<body>
+<div th:replace="~{fragments/layout :: navbar}"></div>
+<div class="container">
+    <div th:replace="~{fragments/layout :: alerts}"></div>
+    <div class="breadcrumb"><a th:href="@{/admin/users}">Utilisateurs</a> /
+        <span th:text="${user.id == null} ? 'Nouveau' : 'Modifier'">Nouveau</span></div>
+    <h1 class="page-title" th:text="${user.id == null} ? 'Nouvel utilisateur' : 'Modifier l utilisateur'">Utilisateur</h1>
+
+    <div class="card">
+        <form th:action="@{/admin/users/save}" th:object="${user}" method="post">
+            <input type="hidden" th:field="*{id}"/>
+            <div class="form-group">
+                <label>Nom d'utilisateur</label>
+                <input type="text" th:field="*{username}"/>
+                <span class="error" th:if="${#fields.hasErrors('username')}" th:errors="*{username}"></span>
+            </div>
+            <div class="form-group">
+                <label>Nom complet</label>
+                <input type="text" th:field="*{fullName}"/>
+                <span class="error" th:if="${#fields.hasErrors('fullName')}" th:errors="*{fullName}"></span>
+            </div>
+            <div class="form-group">
+                <label>Email</label>
+                <input type="email" th:field="*{email}"/>
+                <span class="error" th:if="${#fields.hasErrors('email')}" th:errors="*{email}"></span>
+            </div>
+            <div class="form-group">
+                <label th:text="${user.id == null} ? 'Mot de passe' : 'Mot de passe (laisser vide pour conserver)'">Mot de passe</label>
+                <input type="password" name="password"/>
+                <span class="error" th:if="${#fields.hasErrors('password')}" th:errors="*{password}"></span>
+            </div>
+            <div class="form-group">
+                <label>Role</label>
+                <select th:field="*{role}">
+                    <option th:each="r : ${roles}" th:value="${r}" th:text="${r}">ROLE</option>
+                </select>
+            </div>
+            <div class="form-group">
+                <label>Filiere (pour les etudiants)</label>
+                <select name="filiere">
+                    <option value="">-- Aucune --</option>
+                    <option th:each="f : ${filieres}" th:value="${f.id}" th:text="${f.nom}"
+                            th:selected="${user.filiere != null and user.filiere.id == f.id}">Filiere</option>
+                </select>
+            </div>
+            <div class="form-group">
+                <label><input type="checkbox" th:field="*{enabled}" style="width:auto"/> Compte actif</label>
+            </div>
+            <button class="btn btn-primary" type="submit">Enregistrer</button>
+            <a class="btn btn-light" th:href="@{/admin/users}">Annuler</a>
+        </form>
+    </div>
+</div>
+<div th:replace="~{fragments/layout :: footer}"></div>
+</body>
+</html>

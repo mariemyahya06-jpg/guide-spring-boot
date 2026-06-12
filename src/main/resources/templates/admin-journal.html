@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="fr" xmlns:th="http://www.thymeleaf.org">
+<head th:replace="~{fragments/layout :: head('Journal d administration')}"></head>
+<body>
+<div th:replace="~{fragments/layout :: navbar}"></div>
+<div class="container">
+    <div class="breadcrumb">
+        <a th:href="@{/admin/centre}">Centre d'administration</a> / Journal d'administration</div>
+    <div th:replace="~{fragments/layout :: alerts}"></div>
+    <h1 class="page-title">Journal d'administration</h1>
+    <p class="page-sub">Historique des actions effectuees par les administrateurs.</p>
+
+    <div class="card" style="padding:0;overflow:hidden">
+        <table>
+            <thead><tr>
+                <th>Date et heure</th><th>Administrateur</th><th>Action</th>
+                <th>Type</th><th>Element</th><th>Detail</th>
+            </tr></thead>
+            <tbody>
+            <tr th:each="log : ${logs}">
+                <td th:text="${#temporals.format(log.dateHeure, 'dd/MM/yyyy HH:mm')}">date</td>
+                <td th:text="${log.administrateur}">admin</td>
+                <td>
+                    <span th:class="${log.action == 'DELETE'} ? 'pill pill-red'
+                                  : (${log.action == 'CREATE'} ? 'pill pill-green' : 'pill pill-orange')"
+                          th:text="${log.action}">ACTION</span>
+                </td>
+                <td><span class="tag" th:text="${log.typeElement}">Type</span></td>
+                <td th:text="${log.nomElement}">nom</td>
+                <td class="muted" th:text="${log.detail}">detail</td>
+            </tr>
+            <tr th:if="${logs.isEmpty()}">
+                <td colspan="6" class="muted" style="text-align:center">
+                    Aucune action enregistree pour le moment.</td>
+            </tr>
+            </tbody>
+        </table>
+    </div>
+    <a class="btn btn-light" th:href="@{/admin/centre}">Retour au Centre d'administration</a>
+</div>
+<div th:replace="~{fragments/layout :: footer}"></div>
+</body>
+</html>

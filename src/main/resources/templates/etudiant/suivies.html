@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="fr" xmlns:th="http://www.thymeleaf.org">
+<head th:replace="~{fragments/layout :: head('Mes ressources suivies')}"></head>
+<body>
+<div th:replace="~{fragments/layout :: navbar}"></div>
+<div class="container">
+    <div class="breadcrumb"><a th:href="@{/etudiant}">Accueil</a> / Mes ressources suivies</div>
+    <div th:replace="~{fragments/layout :: alerts}"></div>
+    <h1 class="page-title">Mes ressources suivies</h1>
+    <p class="page-sub">Les ressources que vous suivez, avec leur statut et leur avancement.</p>
+
+    <div class="grid grid-2">
+        <div class="card" th:each="p : ${progressions}">
+            <div style="display:flex;justify-content:space-between;align-items:center">
+                <strong><a th:href="@{/ressource/{id}(id=${p.ressource.id})}" th:text="${p.ressource.titre}">Ressource</a></strong>
+                <span th:class="${p.statut.name() == 'TERMINE'} ? 'pill pill-green' : (${p.statut.name() == 'EN_COURS'} ? 'pill pill-orange' : 'pill pill-grey')"
+                      th:text="${p.statut}">Statut</span>
+            </div>
+            <div class="muted" style="font-size:.82rem;margin:4px 0"
+                 th:text="${p.ressource.module != null ? p.ressource.module.nom + ' · ' + p.ressource.module.niveau : ''}">Module</div>
+
+            <div style="background:#eceff3;border-radius:10px;height:14px;margin:8px 0;overflow:hidden">
+                <div th:style="'width:' + ${p.pourcentage} + '%;height:100%;background:var(--blue)'"></div>
+            </div>
+            <span class="muted" style="font-size:.82rem" th:text="${p.pourcentage} + '% complete'">0%</span>
+
+            <!-- Mise a jour du suivi (formulaire integre) -->
+            <form th:action="@{/etudiant/progression/{id}/maj(id=${p.ressource.id})}" method="post"
+                  style="display:flex;gap:8px;align-items:end;flex-wrap:wrap;margin-top:10px;border-top:1px solid var(--line);padding-top:10px">
+                <div class="form-group" style="margin:0">
+                    <label>Statut</label>
+                    <select name="statut">
+                        <option th:each="s : ${statuts}" th:value="${s}" th:text="${s}"
+                                th:selected="${p.statut == s}">Statut</option>
+                    </select>
+                </div>
+                <div class="form-group" style="margin:0">
+                    <label>%</label>
+                    <input type="number" name="pourcentage" min="0" max="100" th:value="${p.pourcentage}" style="width:90px"/>
+                </div>
+                <button class="btn btn-primary btn-sm" type="submit">Mettre a jour</button>
+                <a class="btn btn-light btn-sm" th:href="@{/ressource/{id}(id=${p.ressource.id})}">Ouvrir</a>
+            </form>
+        </div>
+
+        <div th:if="${progressions.isEmpty()}" class="card muted">
+            Vous ne suivez aucune ressource pour le moment.
+            Ouvrez une ressource depuis le <a th:href="@{/catalogue}">catalogue</a> et commencez le suivi.
+        </div>
+    </div>
+</div>
+<div th:replace="~{fragments/layout :: footer}"></div>
+</body>
+</html>

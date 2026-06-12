@@ -1,0 +1,16 @@
+<!DOCTYPE html>
+<html lang="fr" xmlns:th="http://www.thymeleaf.org">
+<head th:replace="~{fragments/layout :: head('Bienvenue')}"></head>
+<body>
+<div class="login-wrap">
+    <div class="login-box" style="text-align:center">
+        <h1>GUIDE</h1>
+        <p class="sub">Portail d'Orientation et de Suivi Etudiant</p>
+        <p class="muted" style="margin-bottom:22px">
+            Filieres, modules, ressources, tutoriels et mentorat pour bien demarrer vos etudes.</p>
+        <a class="btn btn-primary" style="width:100%;margin-bottom:10px" th:href="@{/login}">Se connecter</a>
+        <a class="btn btn-light" style="width:100%" th:href="@{/register}">Creer un compte etudiant</a>
+    </div>
+</div>
+</body>
+</html>

@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="fr" xmlns:th="http://www.thymeleaf.org">
+<head th:replace="~{fragments/layout :: head('Tutoriels')}"></head>
+<body>
+<div th:replace="~{fragments/layout :: navbar}"></div>
+<div class="container">
+    <div th:replace="~{fragments/layout :: alerts}"></div>
+    <div class="breadcrumb"><a th:href="@{/mentor}">Mentor</a> / Tutoriels</div>
+    <h1 class="page-title">Tutoriels</h1>
+
+    <div class="toolbar">
+        <a class="btn btn-primary" th:href="@{/mentor/tutoriels/new}">+ Nouveau tutoriel</a>
+    </div>
+
+    <div class="card" style="padding:0;overflow:hidden">
+        <table>
+            <thead><tr><th>ID</th><th>Titre</th><th>Module</th><th>Auteur</th><th>Actions</th></tr></thead>
+            <tbody>
+            <tr th:each="t : ${tutoriels}">
+                <td th:text="${t.id}">1</td>
+                <td th:text="${t.titre}">Titre</td>
+                <td th:text="${t.module != null ? t.module.nom : '-'}">Module</td>
+                <td th:text="${t.auteur != null ? t.auteur.fullName : '-'}">Auteur</td>
+                <td>
+                    <a class="btn btn-light btn-sm" th:href="@{/mentor/tutoriels/{id}/edit(id=${t.id})}">Modifier</a>
+                    <form th:action="@{/mentor/tutoriels/{id}/delete(id=${t.id})}" method="post" style="display:inline"
+                          onsubmit="return confirm('Voulez-vous vraiment supprimer cet element ?');">
+                        <button class="btn btn-danger btn-sm" type="submit">Supprimer</button>
+                    </form>
+                </td>
+            </tr>
+            <tr th:if="${tutoriels.isEmpty()}"><td colspan="5" class="muted" style="text-align:center">Aucun tutoriel.</td></tr>
+            </tbody>
+        </table>
+    </div>
+</div>
+<div th:replace="~{fragments/layout :: footer}"></div>
+</body>
+</html>

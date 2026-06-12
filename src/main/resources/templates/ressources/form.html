@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="fr" xmlns:th="http://www.thymeleaf.org">
+<head th:replace="~{fragments/layout :: head('Ressource')}"></head>
+<body>
+<div th:replace="~{fragments/layout :: navbar}"></div>
+<div class="container">
+    <div th:replace="~{fragments/layout :: alerts}"></div>
+    <div class="breadcrumb">Ressources /
+        <span th:text="${ressource.id == null} ? 'Nouvelle' : 'Modifier'">Nouvelle</span></div>
+    <h1 class="page-title" th:text="${ressource.id == null} ? 'Nouvelle ressource' : 'Modifier la ressource'">Ressource</h1>
+
+    <div class="card">
+        <form th:action="${currentUser != null and currentUser.role != null and currentUser.role.name() == 'MENTOR'} ? @{/mentor/ressources/save} : @{/admin/ressources/save}"
+              th:object="${ressource}" method="post">
+            <input type="hidden" th:field="*{id}"/>
+            <div class="form-group">
+                <label>Titre</label>
+                <input type="text" th:field="*{titre}"/>
+                <span class="error" th:if="${#fields.hasErrors('titre')}" th:errors="*{titre}"></span>
+            </div>
+            <div class="form-group">
+                <label>Type</label>
+                <select th:field="*{type}">
+                    <option value="">-- Choisir --</option>
+                    <option th:each="t : ${ {'PDF','VIDEO','EXERCICES','ARTICLE','LIEN'} }" th:value="${t}" th:text="${t}">PDF</option>
+                </select>
+                <span class="error" th:if="${#fields.hasErrors('type')}" th:errors="*{type}"></span>
+            </div>
+            <div class="form-group">
+                <label>Module</label>
+                <select name="module">
+                    <option value="">-- Choisir --</option>
+                    <option th:each="m : ${modules}" th:value="${m.id}"
+                            th:text="${m.nom + ' (' + m.niveau + ')'}"
+                            th:selected="${ressource.module != null and ressource.module.id == m.id}">Module</option>
+                </select>
+                <span class="error" th:if="${#fields.hasErrors('module')}" th:errors="*{module}"></span>
+            </div>
+            <div class="form-group">
+                <label>URL</label>
+                <input type="text" th:field="*{url}" placeholder="https://..."/>
+            </div>
+            <div class="form-group">
+                <label>Mots-cles (separes par des virgules)</label>
+                <input type="text" th:field="*{motsCles}" placeholder="java, poo, debutant"/>
+            </div>
+            <div class="form-group">
+                <label>Description</label>
+                <textarea th:field="*{description}" rows="4"></textarea>
+            </div>
+            <button class="btn btn-primary" type="submit">Enregistrer</button>
+            <a class="btn btn-light" th:href="@{/dashboard}">Annuler</a>
+        </form>
+    </div>
+</div>
+<div th:replace="~{fragments/layout :: footer}"></div>
+</body>
+</html>

@@ -1,0 +1,15 @@
+<!DOCTYPE html>
+<html lang="fr" xmlns:th="http://www.thymeleaf.org">
+<head th:replace="~{fragments/layout :: head('Acces refuse')}"></head>
+<body>
+<div class="login-wrap" style="background:linear-gradient(135deg,#16263f,#cf3a3a)">
+    <div class="login-box" style="text-align:center">
+        <h1 style="color:#cf3a3a">403</h1>
+        <p class="sub">Acces refuse</p>
+        <p class="muted" style="margin-bottom:18px">
+            Vous n'avez pas les droits necessaires pour acceder a cette page.</p>
+        <a class="btn btn-primary" style="width:100%" th:href="@{/dashboard}">Retour a l'accueil</a>
+    </div>
+</div>
+</body>
+</html>
