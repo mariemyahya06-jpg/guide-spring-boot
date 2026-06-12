@@ -1,18 +1,12 @@
 package com.guide.portail.entity;
 
 import jakarta.persistence.*;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
 
 import java.time.LocalDate;
 
 @Entity
 @Table(name = "favoris",
        uniqueConstraints = @UniqueConstraint(columnNames = {"user_id", "ressource_id"}))
-@Getter
-@Setter
-@NoArgsConstructor
 public class Favori {
 
     @Id
@@ -33,5 +27,40 @@ public class Favori {
     public Favori(User user, Ressource ressource) {
         this.user = user;
         this.ressource = ressource;
+    }
+
+    public Favori() {
+    }
+
+    public Long getId() {
+        return id;
+    }
+
+    public void setId(Long id) {
+        this.id = id;
+    }
+
+    public User getUser() {
+        return user;
+    }
+
+    public void setUser(User user) {
+        this.user = user;
+    }
+
+    public Ressource getRessource() {
+        return ressource;
+    }
+
+    public void setRessource(Ressource ressource) {
+        this.ressource = ressource;
+    }
+
+    public LocalDate getDateAjout() {
+        return dateAjout;
+    }
+
+    public void setDateAjout(LocalDate dateAjout) {
+        this.dateAjout = dateAjout;
     }
 }

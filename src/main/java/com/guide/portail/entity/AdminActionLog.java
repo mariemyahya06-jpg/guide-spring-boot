@@ -1,18 +1,12 @@
 package com.guide.portail.entity;
 
 import jakarta.persistence.*;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
 
 import java.time.LocalDateTime;
 
 /** Trace simple d'une action effectuee par un administrateur (journal). */
 @Entity
 @Table(name = "admin_action_logs")
-@Getter
-@Setter
-@NoArgsConstructor
 public class AdminActionLog {
 
     @Id
@@ -46,6 +40,65 @@ public class AdminActionLog {
         this.action = action;
         this.typeElement = typeElement;
         this.nomElement = nomElement;
+        this.detail = detail;
+    }
+
+    public AdminActionLog() {
+    }
+
+    public Long getId() {
+        return id;
+    }
+
+    public void setId(Long id) {
+        this.id = id;
+    }
+
+    public LocalDateTime getDateHeure() {
+        return dateHeure;
+    }
+
+    public void setDateHeure(LocalDateTime dateHeure) {
+        this.dateHeure = dateHeure;
+    }
+
+    public String getAdministrateur() {
+        return administrateur;
+    }
+
+    public void setAdministrateur(String administrateur) {
+        this.administrateur = administrateur;
+    }
+
+    public String getAction() {
+        return action;
+    }
+
+    public void setAction(String action) {
+        this.action = action;
+    }
+
+    public String getTypeElement() {
+        return typeElement;
+    }
+
+    public void setTypeElement(String typeElement) {
+        this.typeElement = typeElement;
+    }
+
+    public String getNomElement() {
+        return nomElement;
+    }
+
+    public void setNomElement(String nomElement) {
+        this.nomElement = nomElement;
+    }
+
+    public String getDetail() {
+        return detail;
+    }
+
+    public void setDetail(String detail) {
         this.detail = detail;
     }
 }

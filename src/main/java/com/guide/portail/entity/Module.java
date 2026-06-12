@@ -4,18 +4,12 @@ import jakarta.persistence.*;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
 
 import java.util.ArrayList;
 import java.util.List;
 
 @Entity
 @Table(name = "modules")
-@Getter
-@Setter
-@NoArgsConstructor
 public class Module {
 
     @Id
@@ -53,5 +47,64 @@ public class Module {
         this.niveau = niveau;
         this.description = description;
         this.filiere = filiere;
+    }
+
+    public Module() {
+    }
+
+    public Long getId() {
+        return id;
+    }
+
+    public void setId(Long id) {
+        this.id = id;
+    }
+
+    public String getNom() {
+        return nom;
+    }
+
+    public void setNom(String nom) {
+        this.nom = nom;
+    }
+
+    public String getNiveau() {
+        return niveau;
+    }
+
+    public void setNiveau(String niveau) {
+        this.niveau = niveau;
+    }
+
+    public String getDescription() {
+        return description;
+    }
+
+    public void setDescription(String description) {
+        this.description = description;
+    }
+
+    public Filiere getFiliere() {
+        return filiere;
+    }
+
+    public void setFiliere(Filiere filiere) {
+        this.filiere = filiere;
+    }
+
+    public List<Ressource> getRessources() {
+        return ressources;
+    }
+
+    public void setRessources(List<Ressource> ressources) {
+        this.ressources = ressources;
+    }
+
+    public List<Tutoriel> getTutoriels() {
+        return tutoriels;
+    }
+
+    public void setTutoriels(List<Tutoriel> tutoriels) {
+        this.tutoriels = tutoriels;
     }
 }

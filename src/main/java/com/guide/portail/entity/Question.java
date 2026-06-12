@@ -3,17 +3,11 @@ package com.guide.portail.entity;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Size;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
 
 import java.time.LocalDateTime;
 
 @Entity
 @Table(name = "questions")
-@Getter
-@Setter
-@NoArgsConstructor
 public class Question {
 
     @Id
@@ -51,5 +45,72 @@ public class Question {
 
     public boolean isRepondue() {
         return reponse != null && !reponse.isBlank();
+    }
+
+    public Question() {
+    }
+
+    public Long getId() {
+        return id;
+    }
+
+    public void setId(Long id) {
+        this.id = id;
+    }
+
+    public String getContenu() {
+        return contenu;
+    }
+
+    public void setContenu(String contenu) {
+        this.contenu = contenu;
+    }
+
+    public String getReponse() {
+        return reponse;
+    }
+
+    public void setReponse(String reponse) {
+        this.reponse = reponse;
+    }
+
+    public LocalDateTime getDateCreation() {
+        return dateCreation;
+    }
+
+    public void setDateCreation(LocalDateTime dateCreation) {
+        this.dateCreation = dateCreation;
+    }
+
+    public LocalDateTime getDateReponse() {
+        return dateReponse;
+    }
+
+    public void setDateReponse(LocalDateTime dateReponse) {
+        this.dateReponse = dateReponse;
+    }
+
+    public User getEtudiant() {
+        return etudiant;
+    }
+
+    public void setEtudiant(User etudiant) {
+        this.etudiant = etudiant;
+    }
+
+    public User getMentor() {
+        return mentor;
+    }
+
+    public void setMentor(User mentor) {
+        this.mentor = mentor;
+    }
+
+    public Ressource getRessource() {
+        return ressource;
+    }
+
+    public void setRessource(Ressource ressource) {
+        this.ressource = ressource;
     }
 }
