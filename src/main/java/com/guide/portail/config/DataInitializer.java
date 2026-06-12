@@ -1,15 +1,38 @@
 package com.guide.portail.config;
 
-import com.guide.portail.entity.*;
-import com.guide.portail.entity.Module;
-import com.guide.portail.repository.*;
+import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.LinkedHashMap;
+import java.util.List;
+import java.util.Map;
+import java.util.Random;
+
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.crypto.password.PasswordEncoder;
 
-import java.time.LocalDateTime;
-import java.util.*;
+import com.guide.portail.entity.AdminActionLog;
+import com.guide.portail.entity.Favori;
+import com.guide.portail.entity.Filiere;
+import com.guide.portail.entity.Module;
+import com.guide.portail.entity.Progression;
+import com.guide.portail.entity.Question;
+import com.guide.portail.entity.Ressource;
+import com.guide.portail.entity.Role;
+import com.guide.portail.entity.StatutProgression;
+import com.guide.portail.entity.Tutoriel;
+import com.guide.portail.entity.User;
+import com.guide.portail.repository.AdminActionLogRepository;
+import com.guide.portail.repository.FavoriRepository;
+import com.guide.portail.repository.FiliereRepository;
+import com.guide.portail.repository.ModuleRepository;
+import com.guide.portail.repository.ProgressionRepository;
+import com.guide.portail.repository.QuestionRepository;
+import com.guide.portail.repository.RessourceRepository;
+import com.guide.portail.repository.TutorielRepository;
+import com.guide.portail.repository.UserRepository;
 
 /**
  * Initialise des donnees de demonstration de maniere IDEMPOTENTE et met a jour
@@ -132,19 +155,19 @@ public class DataInitializer {
                     Ressource rCours = new Ressource("Cours : " + md[0],
                             "Ce cours presente " + theme + ".",
                             "PDF", "", mc, module, mentors.get(rnd.nextInt(mentors.size())));
-                    rCours.setContenu(contenu("PDF", md[0], f[0], notions));
+                    rCours.setContenu(contenu("PDF", md[0], notions));
                     allRessources.add(ressourceRepo.save(rCours));
 
                     Ressource rTd = new Ressource("TD et exercices : " + md[0],
                             "Serie d'exercices corriges portant sur " + theme + ".",
                             "EXERCICES", "", mc, module, mentors.get(rnd.nextInt(mentors.size())));
-                    rTd.setContenu(contenu("EXERCICES", md[0], f[0], notions));
+                    rTd.setContenu(contenu("EXERCICES", md[0], notions));
                     allRessources.add(ressourceRepo.save(rTd));
 
                     Ressource rVid = new Ressource("Video : introduction a " + md[0],
                             "Video pedagogique illustrant " + theme + ".",
                             "VIDEO", "", mc, module, mentors.get(rnd.nextInt(mentors.size())));
-                    rVid.setContenu(contenu("VIDEO", md[0], f[0], notions));
+                    rVid.setContenu(contenu("VIDEO", md[0], notions));
                     allRessources.add(ressourceRepo.save(rVid));
                 }
                 if (premierModule != null) {
@@ -248,7 +271,6 @@ public class DataInitializer {
                 if (r.getContenu() != null && r.getContenu().contains("Conseils rapides :")) continue;
 
                 String moduleNom = r.getModule().getNom();
-                String filiereNom = (r.getModule().getFiliere() != null) ? r.getModule().getFiliere().getNom() : "";
                 String[] notions = notions(moduleNom);
                 String theme = String.join(", ", notions);
                 String type; String newDesc;
@@ -256,7 +278,7 @@ public class DataInitializer {
                 else if (titre.startsWith("TD")) { type = "EXERCICES"; newDesc = "Serie d'exercices corriges portant sur " + theme + "."; }
                 else { type = "VIDEO"; newDesc = "Video pedagogique illustrant " + theme + "."; }
                 r.setDescription(newDesc);
-                r.setContenu(contenu(type, moduleNom, filiereNom, notions));
+                r.setContenu(contenu(type, moduleNom, notions));
                 ressourceRepo.save(r);
                 ressourcesMaj++;
             }
@@ -277,7 +299,7 @@ public class DataInitializer {
     }
 
     /** Contenu pedagogique adapte au TYPE de ressource (Cours / TD / Video). */
-    private static String contenu(String type, String module, String filiere, String[] notions) {
+    private static String contenu(String type, String module, String[] notions) {
         String theme = String.join(", ", notions);
         String resume = RESUMES.getOrDefault(module, "Ce module couvre " + theme + ".");
         String exemple = EXEMPLES.get(module);
@@ -287,7 +309,7 @@ public class DataInitializer {
         StringBuilder sb = new StringBuilder();
 
         switch (type) {
-            case "EXERCICES":
+            case "EXERCICES" -> {
                 // ---------- TD / Exercices ----------
                 sb.append("Objectif du TD :\n");
                 sb.append("S'entrainer sur ").append(theme).append(".\n\n");
@@ -297,8 +319,8 @@ public class DataInitializer {
                 sb.append("\nConseils rapides :\n");
                 sb.append("- Cherchez d'abord seul avant de regarder la correction.\n");
                 sb.append("- Verifiez chaque etape de votre raisonnement.");
-                break;
-            case "VIDEO":
+            }
+            case "VIDEO" -> {
                 // ---------- Video ----------
                 sb.append("Ce que vous allez apprendre :\n");
                 sb.append("Apres cette video, vous comprendrez ").append(theme).append(".\n\n");
@@ -310,8 +332,8 @@ public class DataInitializer {
                 sb.append("\nConseils rapides :\n");
                 sb.append("- Prenez des notes pendant la video.\n");
                 sb.append("- Mettez la video en pause pour refaire les exemples.");
-                break;
-            default:
+            }
+            default -> {
                 // ---------- Cours (PDF) : mini-lecon ----------
                 sb.append("Resume du cours :\n").append(resume).append("\n\n");
                 sb.append("Notions essentielles :\n");
@@ -320,7 +342,7 @@ public class DataInitializer {
                 sb.append("\nConseils rapides :\n");
                 sb.append("- Reliez chaque notion a un exemple concret.\n");
                 sb.append("- Resumez le cours avec vos propres mots, puis testez-vous.");
-                break;
+            }
         }
         return sb.toString();
     }
