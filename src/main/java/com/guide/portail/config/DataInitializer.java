@@ -1,38 +1,15 @@
 package com.guide.portail.config;
 
-import java.time.LocalDateTime;
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.LinkedHashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.Random;
-
+import com.guide.portail.entity.*;
+import com.guide.portail.entity.Module;
+import com.guide.portail.repository.*;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.crypto.password.PasswordEncoder;
 
-import com.guide.portail.entity.AdminActionLog;
-import com.guide.portail.entity.Favori;
-import com.guide.portail.entity.Filiere;
-import com.guide.portail.entity.Module;
-import com.guide.portail.entity.Progression;
-import com.guide.portail.entity.Question;
-import com.guide.portail.entity.Ressource;
-import com.guide.portail.entity.Role;
-import com.guide.portail.entity.StatutProgression;
-import com.guide.portail.entity.Tutoriel;
-import com.guide.portail.entity.User;
-import com.guide.portail.repository.AdminActionLogRepository;
-import com.guide.portail.repository.FavoriRepository;
-import com.guide.portail.repository.FiliereRepository;
-import com.guide.portail.repository.ModuleRepository;
-import com.guide.portail.repository.ProgressionRepository;
-import com.guide.portail.repository.QuestionRepository;
-import com.guide.portail.repository.RessourceRepository;
-import com.guide.portail.repository.TutorielRepository;
-import com.guide.portail.repository.UserRepository;
+import java.time.LocalDateTime;
+import java.util.*;
 
 /**
  * Initialise des donnees de demonstration de maniere IDEMPOTENTE et met a jour
@@ -45,6 +22,7 @@ import com.guide.portail.repository.UserRepository;
 public class DataInitializer {
 
     @Bean
+    @SuppressWarnings("unused")
     CommandLineRunner initData(UserRepository userRepo,
                                FiliereRepository filiereRepo,
                                ModuleRepository moduleRepo,
