@@ -9,6 +9,12 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.SimpleUrlAuthenticationSuccessHandler;
 
+/**
+ * Configuration de la securite : authentification par formulaire, hachage BCrypt
+ * des mots de passe, et protection des routes selon le role
+ * (/admin -> ADMIN, /mentor -> MENTOR, /etudiant -> ETUDIANT).
+ * Chaque utilisateur est redirige vers son tableau de bord apres connexion.
+ */
 @Configuration
 public class SecurityConfig {
 

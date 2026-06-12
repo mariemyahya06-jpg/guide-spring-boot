@@ -6,6 +6,10 @@ import org.springframework.stereotype.Service;
 
 import java.util.List;
 
+/**
+ * Journal d'administration : enregistre les actions des administrateurs
+ * (CREATE / UPDATE / DELETE) et fournit l'historique pour la page Journal.
+ */
 @Service
 public class AdminLogService {
 

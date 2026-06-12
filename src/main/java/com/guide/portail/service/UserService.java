@@ -19,6 +19,11 @@ import org.springframework.stereotype.Service;
 
 import java.util.List;
 
+/**
+ * Gestion des utilisateurs : recherche, creation/mise a jour (mot de passe encode)
+ * et suppression securisee (le compte admin principal est protege et les donnees
+ * liees sont traitees avant la suppression pour eviter toute erreur de cle etrangere).
+ */
 @Service
 public class UserService {
 
